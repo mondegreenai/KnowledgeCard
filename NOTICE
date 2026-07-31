@@ -1,0 +1,15 @@
+Knowledge Cards
+Copyright (c) 2026 Mondegreen.ai
+
+This product includes software and specifications developed by Mondegreen.ai
+(https://mondegreen.ai).
+
+The Knowledge Card schema, JSON-LD context, example cards, and scripts in this
+repository are licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The Mondegreen ontologies in the ontology/ directory and the written
+specification in spec/ are licensed under the Creative Commons Attribution 4.0
+International License (CC BY 4.0), see LICENSE-CC-BY.
+
+Attribution, where required, should read: "Mondegreen.ai, Knowledge Cards,
+https://github.com/mondegreenai/KnowledgeCard".

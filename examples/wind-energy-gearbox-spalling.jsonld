@@ -1,0 +1,137 @@
+{
+  "@context": "../context/kc.jsonld",
+  "@type": "kc:KnowledgeCard",
+  "@id": "energy:GearboxBearing_OuterRaceSpalling_card",
+
+  "kc:concept": "energy:GearboxBearing_OuterRaceSpalling",
+  "kc:title": "Gearbox Outer-Race Spalling in a Wind Turbine",
+  "kc:domain": "Wind energy, drivetrain condition monitoring",
+
+  "kc:meta": {
+    "kc:lifecycle": "validated",
+    "kc:version": "1.0",
+    "kc:validatedBy": "reliability-engineer-anon",
+    "kc:validationDate": "2026-01-22",
+    "kc:ontologyVersion": "energydiag-0.2",
+    "kc:provenance": [
+      { "kc:sourceType": "STD", "kc:document": "ISO 13373-3", "kc:section": "Bearing fault frequencies" },
+      { "kc:sourceType": "STD", "kc:document": "IEC 61400-25-6", "kc:section": "SCADA logical nodes" },
+      { "kc:sourceType": "FLEET", "kc:document": "OEM reliability database (anonymised)", "kc:section": "confirmed bearing failures" }
+    ]
+  },
+
+  "kc:entities": [
+    {
+      "@id": "energy:HSSBearing",
+      "kc:name": "High-Speed-Shaft Bearing",
+      "kc:entityRole": "primary-subject",
+      "kc:observability": "inferred",
+      "kc:criticalityWeight": 1.00
+    },
+    {
+      "@id": "energy:BearingOuterRace",
+      "kc:name": "Bearing Outer Race",
+      "kc:entityRole": "causal-target",
+      "kc:observability": "inferred",
+      "kc:criticalityWeight": 0.92
+    },
+    {
+      "@id": "energy:BPFOAmplitude",
+      "kc:name": "BPFO Vibration Amplitude",
+      "kc:entityRole": "observable-signal",
+      "kc:observability": "sensor-derived",
+      "kc:criticalityWeight": 0.94
+    },
+    {
+      "@id": "energy:FerrousParticleCount",
+      "kc:name": "Ferrous Particle Count",
+      "kc:entityRole": "observable-signal",
+      "kc:observability": "sensor-derived",
+      "kc:criticalityWeight": 0.85
+    },
+    {
+      "@id": "energy:OilTempTrend",
+      "kc:name": "Oil Temperature Trend",
+      "kc:entityRole": "observable-signal",
+      "kc:observability": "sensor-derived",
+      "kc:criticalityWeight": 0.78
+    },
+    {
+      "@id": "energy:GeneratorSpeed",
+      "kc:name": "Generator Speed",
+      "kc:entityRole": "contextual-factor",
+      "kc:observability": "sensor-derived",
+      "kc:criticalityWeight": 0.40
+    }
+  ],
+
+  "kc:relationships": [
+    {
+      "kc:from": "energy:BearingOuterRace",
+      "kc:property": "sd:generates",
+      "kc:to": "energy:BPFOAmplitude",
+      "kc:confidence": 0.93
+    },
+    {
+      "kc:from": "energy:BearingOuterRace",
+      "kc:property": "sd:generates",
+      "kc:to": "energy:FerrousParticleCount",
+      "kc:confidence": 0.87
+    }
+  ],
+
+  "kc:reasoning": {
+
+    "kc:level1_narrative": "A rising vibration amplitude at the bearing's outer-race fault frequency, together with an increasing ferrous particle count in the lubricant, indicates outer-race spalling on the high-speed-shaft bearing. The oil temperature trend corroborates. The diagnosis holds only while the turbine operates within its rated wind-speed band.",
+
+    "kc:level2_pattern": {
+      "kc:requiredSignals": [
+        { "@id": "energy:BPFOAmplitude", "kc:threshold": "> 2.0 g", "kc:trend": "rising" },
+        { "@id": "energy:FerrousParticleCount", "kc:threshold": "> 15 ppm", "kc:trend": "rising" }
+      ],
+      "kc:corroboratingSignal": { "@id": "energy:OilTempTrend", "kc:trend": "rising" },
+      "kc:conclusion": "energy:GearboxBearing_OuterRaceSpalling"
+    },
+
+    "kc:level3_rule": {
+      "kc:ruleLanguage": "SWRL",
+      "kc:ruleBody": "HSSBearing(?b) ^ hasBPFOAmplitude(?b,?a) ^ greaterThan(?a,2.0) ^ hasFerrousTrend(?b,'rising') ^ hasOperatingMode(?b,'rated') -> hasFailureMode(?b, energy:GearboxBearing_OuterRaceSpalling)",
+      "kc:calibratedConfidence": 0.89,
+      "kc:calibrationProvenance": {
+        "kc:groundTruth": "post-mortem-bearing-inspection-reports",
+        "kc:calibrationMethod": "laplace-smoothed-precision"
+      }
+    },
+
+    "kc:level4_probabilistic": {
+      "kc:formalism": "bayesian-network",
+      "kc:priorFailureRate": 0.04,
+      "kc:conditionalProbabilities": "see energydiag-0.2 CPT-017",
+      "kc:posteriorOnEvidence": 0.89
+    }
+  },
+
+  "kc:boundaries": [
+    {
+      "kc:severity": "card-invalid",
+      "kc:condition": "bearing re-greased within previous 48 hours",
+      "kc:rationale": "re-greasing transient mimics the spalling signature"
+    },
+    {
+      "kc:severity": "card-invalid",
+      "kc:condition": "turbine operating outside rated wind-speed band",
+      "kc:rationale": "signal-to-noise on the fault frequency is unreliable outside the rated band"
+    },
+    {
+      "kc:severity": "requires-human-review",
+      "kc:condition": "concurrent drivetrain alert present",
+      "kc:rationale": "coupled faults require an engineer to disentangle"
+    }
+  ],
+
+  "kc:systemLink": {
+    "kc:embeddingMode": "reference",
+    "kc:endpoint": "https://example.org/sparql",
+    "kc:inference": "symbolic-plus-llm"
+  }
+}

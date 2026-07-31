@@ -1,0 +1,61 @@
+{
+  "@context": {
+    "@version": 1.1,
+
+    "kc": "https://mondegreen.ai/ontology/kc#",
+    "energy": "https://mondegreen.ai/ontology/energy#",
+    "sd": "https://mondegreen.ai/ontology/semidiag#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "KnowledgeCard": "kc:KnowledgeCard",
+
+    "kc:concept": { "@type": "@id" },
+    "kc:title": { "@type": "xsd:string" },
+    "kc:domain": { "@type": "xsd:string" },
+
+    "kc:meta": { "@type": "@id" },
+    "kc:lifecycle": { "@type": "xsd:string" },
+    "kc:version": { "@type": "xsd:string" },
+    "kc:validatedBy": { "@type": "xsd:string" },
+    "kc:validationDate": { "@type": "xsd:date" },
+    "kc:ontologyVersion": { "@type": "xsd:string" },
+    "kc:supersededBy": { "@type": "@id" },
+    "kc:provenance": { "@container": "@set" },
+    "kc:sourceType": { "@type": "xsd:string" },
+    "kc:document": { "@type": "xsd:string" },
+    "kc:section": { "@type": "xsd:string" },
+
+    "kc:entities": { "@container": "@set" },
+    "kc:entityRole": { "@type": "xsd:string" },
+    "kc:observability": { "@type": "xsd:string" },
+    "kc:criticalityWeight": { "@type": "xsd:decimal" },
+    "kc:name": { "@type": "xsd:string" },
+
+    "kc:relationships": { "@container": "@set" },
+    "kc:from": { "@type": "@id" },
+    "kc:property": { "@type": "@id" },
+    "kc:to": { "@type": "@id" },
+    "kc:confidence": { "@type": "xsd:decimal" },
+
+    "kc:reasoning": { "@type": "@id" },
+    "kc:level1_narrative": { "@type": "xsd:string" },
+    "kc:level2_pattern": { "@type": "@id" },
+    "kc:level3_rule": { "@type": "@id" },
+    "kc:level4_probabilistic": { "@type": "@id" },
+    "kc:ruleLanguage": { "@type": "xsd:string" },
+    "kc:ruleBody": { "@type": "xsd:string" },
+    "kc:calibratedConfidence": { "@type": "xsd:decimal" },
+    "kc:formalism": { "@type": "xsd:string" },
+
+    "kc:boundaries": { "@container": "@set" },
+    "kc:severity": { "@type": "xsd:string" },
+    "kc:condition": { "@type": "xsd:string" },
+    "kc:rationale": { "@type": "xsd:string" },
+
+    "kc:systemLink": { "@type": "@id" }
+  }
+}

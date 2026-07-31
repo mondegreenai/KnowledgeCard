@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mondegreen.ai/schema/knowledge-card/v0.1/knowledge-card.schema.json",
+  "title": "Knowledge Card",
+  "description": "A Knowledge Card captures validated knowledge about a single bounded concept: the entities and relationships involved, the reasoning that connects them, the conditions under which that reasoning no longer holds, and the provenance of every claim. Grounded in a formal domain ontology and signed off by a domain expert. Copyright (c) 2026 Mondegreen.ai. Schema licensed under Apache-2.0.",
+  "type": "object",
+  "required": ["@context", "@type", "kc:concept", "kc:meta", "kc:entities", "kc:relationships", "kc:reasoning", "kc:boundaries"],
+  "additionalProperties": false,
+  "properties": {
+
+    "@context": {
+      "description": "JSON-LD context. May be the canonical Mondegreen context IRI or an inline object.",
+      "oneOf": [
+        { "type": "string", "format": "iri" },
+        { "type": "object" },
+        { "type": "array" }
+      ]
+    },
+
+    "@id": {
+      "description": "Optional IRI identifying this card individual.",
+      "type": "string"
+    },
+
+    "@type": {
+      "description": "Must declare the card as a kc:KnowledgeCard.",
+      "type": "string",
+      "const": "kc:KnowledgeCard"
+    },
+
+    "kc:concept": {
+      "description": "The concept anchor: the ontology class IRI this card is about. This is what fixes the card's meaning against a formal domain ontology.",
+      "type": "string"
+    },
+
+    "kc:title": {
+      "description": "Human-readable title of the card.",
+      "type": "string"
+    },
+
+    "kc:domain": {
+      "description": "Human-readable domain label (e.g. 'Wind energy, drivetrain condition monitoring').",
+      "type": "string"
+    },
+
+    "kc:meta": {
+      "description": "Provenance, lifecycle state, and the expert validation record.",
+      "type": "object",
+      "required": ["kc:lifecycle", "kc:version"],
+      "additionalProperties": true,
+      "properties": {
+        "kc:lifecycle": {
+          "description": "Lifecycle state. A card is authoritative only in the 'validated' state.",
+          "type": "string",
+          "enum": ["draft", "validated", "deprecated", "superseded"]
+        },
+        "kc:version": {
+          "description": "Version string. Cards are versioned so that earlier decisions remain traceable to the knowledge that governed them.",
+          "type": "string"
+        },
+        "kc:validatedBy": {
+          "description": "Identifier of the qualified domain expert who reviewed and signed off the card.",
+          "type": "string"
+        },
+        "kc:validationDate": {
+          "description": "Date of expert sign-off (ISO 8601).",
+          "type": "string"
+        },
+        "kc:ontologyVersion": {
+          "description": "Version of the domain ontology under which the card was checked.",
+          "type": "string"
+        },
+        "kc:supersededBy": {
+          "description": "IRI of the card version that supersedes this one, if any.",
+          "type": "string"
+        },
+        "kc:provenance": {
+          "description": "Source documents and records from which the card's claims were derived (PROV-O aligned).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "kc:sourceType": { "type": "string" },
+              "kc:document": { "type": "string" },
+              "kc:section": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "kc:entities": {
+      "description": "The entity register: the individuals involved in the concept, each with a typed role, an observability class, and a criticality weight.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["@id", "kc:entityRole"],
+        "additionalProperties": true,
+        "properties": {
+          "@id": {
+            "description": "Ontology IRI of the entity.",
+            "type": "string"
+          },
+          "kc:name": {
+            "description": "Human-readable name.",
+            "type": "string"
+          },
+          "kc:entityRole": {
+            "description": "The role the entity plays in the card's reasoning.",
+            "type": "string",
+            "enum": ["primary-subject", "causal-agent", "causal-target", "observable-signal", "contextual-factor"]
+          },
+          "kc:observability": {
+            "description": "How directly the entity can be observed.",
+            "type": "string",
+            "enum": ["directly-observable", "sensor-derived", "inferred", "latent"]
+          },
+          "kc:criticalityWeight": {
+            "description": "How much the entity contributes to the diagnosis, in [0,1].",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+
+    "kc:relationships": {
+      "description": "The relationship topology: named, ontology-grounded relationships between entities, each with a confidence score.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kc:from", "kc:property", "kc:to"],
+        "additionalProperties": true,
+        "properties": {
+          "kc:from": { "type": "string" },
+          "kc:property": {
+            "description": "Named relationship (ideally an ontology object-property IRI).",
+            "type": "string"
+          },
+          "kc:to": { "type": "string" },
+          "kc:confidence": {
+            "description": "Confidence in the relationship, in [0,1].",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+
+    "kc:reasoning": {
+      "description": "Layered reasoning. The layers are a ladder, not a checklist: a card carries as many as its knowledge supports. The narrative and rule layers are expected; the probabilistic layer is optional, present only when calibration data supports it.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+
+        "kc:level1_narrative": {
+          "description": "Plain-language description of how the conclusion follows from the evidence. Required for human review.",
+          "type": "string"
+        },
+
+        "kc:level2_pattern": {
+          "description": "Structured pattern: the signals, their thresholds, and the conclusion they support.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kc:requiredSignals": { "type": "array", "items": { "type": "object" } },
+            "kc:corroboratingSignal": { "type": "object" },
+            "kc:conclusion": { "type": "string" }
+          }
+        },
+
+        "kc:level3_rule": {
+          "description": "Formal rule whose terms are ontology classes, applicable by a symbolic reasoner.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kc:ruleLanguage": {
+              "type": "string",
+              "enum": ["SWRL", "SPARQL", "SHACL"]
+            },
+            "kc:ruleBody": { "type": "string" },
+            "kc:calibratedConfidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "kc:calibrationProvenance": { "type": "object" }
+          }
+        },
+
+        "kc:level4_probabilistic": {
+          "description": "OPTIONAL. Present only when calibration data supports it. Captures that the same signal carries different weight in different contexts and that conflicting signals should shift a degree of belief rather than force a verdict.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kc:formalism": {
+              "type": "string",
+              "enum": ["bayesian-network", "markov-logic-network"]
+            },
+            "kc:priorFailureRate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "kc:conditionalProbabilities": { "type": "string" },
+            "kc:posteriorOnEvidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      },
+      "anyOf": [
+        { "required": ["kc:level1_narrative"] },
+        { "required": ["kc:level3_rule"] }
+      ]
+    },
+
+    "kc:boundaries": {
+      "description": "Scope limits, typed by severity. A 'card-invalid' condition withdraws the card's authority to draw a conclusion; a 'requires-human-review' condition defers to a person; a 'degrades-gracefully' condition lowers confidence but continues.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kc:severity", "kc:condition"],
+        "additionalProperties": true,
+        "properties": {
+          "kc:severity": {
+            "type": "string",
+            "enum": ["degrades-gracefully", "requires-human-review", "card-invalid"]
+          },
+          "kc:condition": { "type": "string" },
+          "kc:rationale": { "type": "string" }
+        }
+      }
+    },
+
+    "kc:systemLink": {
+      "description": "Binds the card to the consuming system: embedding mode, endpoint, and inference configuration.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
