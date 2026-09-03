@@ -68,13 +68,13 @@
   "kc:relationships": [
     {
       "kc:from": "energy:BearingOuterRace",
-      "kc:property": "sd:generates",
+      "kc:property": "energy:generates",
       "kc:to": "energy:BPFOAmplitude",
       "kc:confidence": 0.93
     },
     {
       "kc:from": "energy:BearingOuterRace",
-      "kc:property": "sd:generates",
+      "kc:property": "energy:generates",
       "kc:to": "energy:FerrousParticleCount",
       "kc:confidence": 0.87
     }
