@@ -18,7 +18,7 @@ prose and the schema differ, the schema governs.
 A Knowledge Card is a JSON-LD document. Field names use the `kc:` prefix, bound to
 `https://mondegreen.ai/ontology/kc#` by the context in
 [`context/kc.jsonld`](../context/kc.jsonld). Terms drawn from a domain ontology (for example
-`energy:` or `sd:`) are the responsibility of that ontology.
+`energy:`) are the responsibility of that ontology.
 
 A card is the tuple **KC(C, S) = ⟨M, C, E, R, P, B, L⟩**: metadata, concept anchor, entity
 register, relationship topology, reasoning, boundaries, and system link.
