@@ -3,7 +3,6 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms:<http://purl.org/dc/terms/> .
-@prefix sd:     <https://mondegreen.ai/ontology/semidiag#> .
 @prefix energy: <https://mondegreen.ai/ontology/energy#> .
 
 #################################################################
@@ -26,32 +25,32 @@ energy: a owl:Ontology ;
     rdfs:comment "Skeleton diagnostic vocabulary for wind-energy drivetrain condition monitoring. Minimal by design." .
 
 ########################
-#  Core diagnostic terms (semidiag)
+#  Core diagnostic terms (reusable across domains)
 ########################
 
-sd:FailureMode a owl:Class ;
+energy:FailureMode a owl:Class ;
     rdfs:label "Failure Mode" ;
     rdfs:comment "A characterised way in which a system or component fails." .
 
-sd:Component a owl:Class ;
+energy:Component a owl:Class ;
     rdfs:label "Component" .
 
-sd:ObservableSignal a owl:Class ;
+energy:ObservableSignal a owl:Class ;
     rdfs:label "Observable Signal" ;
     rdfs:comment "A measurable quantity that carries evidence about a failure mode." .
 
-sd:generates a owl:ObjectProperty ;
+energy:generates a owl:ObjectProperty ;
     rdfs:label "generates" ;
     rdfs:comment "Relates a degradation or failure mode to an observable signal it produces." ;
-    rdfs:domain sd:Component ;
-    rdfs:range sd:ObservableSignal .
+    rdfs:domain energy:Component ;
+    rdfs:range energy:ObservableSignal .
 
 ########################
 #  Energy domain terms
 ########################
 
 energy:GearboxFailureMode a owl:Class ;
-    rdfs:subClassOf sd:FailureMode ;
+    rdfs:subClassOf energy:FailureMode ;
     rdfs:label "Gearbox Failure Mode" .
 
 energy:GearboxBearing_OuterRaceSpalling a owl:Class ;
@@ -60,27 +59,27 @@ energy:GearboxBearing_OuterRaceSpalling a owl:Class ;
     rdfs:comment "Progressive spalling on the outer race of the high-speed-shaft bearing in a wind-turbine gearbox." .
 
 energy:HSSBearing a owl:Class ;
-    rdfs:subClassOf sd:Component ;
+    rdfs:subClassOf energy:Component ;
     rdfs:label "High-Speed-Shaft Bearing" .
 
 energy:BearingOuterRace a owl:Class ;
-    rdfs:subClassOf sd:Component ;
+    rdfs:subClassOf energy:Component ;
     rdfs:label "Bearing Outer Race" .
 
 energy:BPFOAmplitude a owl:Class ;
-    rdfs:subClassOf sd:ObservableSignal ;
+    rdfs:subClassOf energy:ObservableSignal ;
     rdfs:label "BPFO Vibration Amplitude" ;
     rdfs:comment "Vibration amplitude at the bearing's ball-pass frequency, outer race." .
 
 energy:FerrousParticleCount a owl:Class ;
-    rdfs:subClassOf sd:ObservableSignal ;
+    rdfs:subClassOf energy:ObservableSignal ;
     rdfs:label "Ferrous Particle Count" ;
     rdfs:comment "Count of ferrous particles in the gearbox lubricant." .
 
 energy:OilTempTrend a owl:Class ;
-    rdfs:subClassOf sd:ObservableSignal ;
+    rdfs:subClassOf energy:ObservableSignal ;
     rdfs:label "Oil Temperature Trend" .
 
 energy:GeneratorSpeed a owl:Class ;
-    rdfs:subClassOf sd:ObservableSignal ;
+    rdfs:subClassOf energy:ObservableSignal ;
     rdfs:label "Generator Speed" .
