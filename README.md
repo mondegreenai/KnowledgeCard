@@ -24,11 +24,11 @@ and AI systems can reason over.
 
 The documentation of AI systems is well served at two layers. Model cards describe how a
 system behaves; data cards describe what it was trained on; system cards describe the risks
-of a deployed system. None of them describes the **knowledge a system reasons from** — the
+of a deployed system. None of them describes the knowledge a system reasons from: the
 concepts it holds, the relationships it models, the reasoning it applies, and the limits
 beyond which that reasoning no longer holds.
 
-For pattern-recognition systems this gap is tolerable. For **agentic AI**, where a system
+For pattern-recognition systems this gap is acceptable. For agentic AI, where a system
 acts on its conclusions, it is the layer in which many initiatives stall: a proof of concept
 performs well in a demonstration but cannot be moved into production, because the knowledge
 the system relies on cannot be inspected, validated, or governed.
@@ -37,22 +37,22 @@ A Knowledge Card gives that layer a form.
 
 ## What a Knowledge Card is
 
-For one concept — a failure mode, a compliance obligation, a process decision — a Knowledge
+For a given concept, e.g.:a failure mode, a compliance obligation, a process decision, a Knowledge
 Card records:
 
-- the **entities** and **relationships** involved,
-- the **reasoning** that connects them, in layers from plain language to a formal rule,
-- the **conditions** under which that reasoning no longer holds, and
-- the **provenance** of every claim,
+- the entities and relationships involved,
+- the reasoning that connects them, in layers from plain language to a formal rule,
+- the conditions under which that reasoning no longer holds, and
+- the provenance of every claim,
 
-all grounded in a formal domain ontology, so every term has a fixed meaning, and signed off
+grounded in a formal domain ontology, so every term has a fixed meaning, and signed off
 by a domain expert before the card is treated as authoritative.
 
 ### The five defining properties
 
 | Property | What it means | Why it matters |
 |---|---|---|
-| **Ontology-grounded** | Every entity and relationship is anchored to a formal ontology term, not a free-text label. | The same concept means the same thing across every agent and system: a shared semantic layer, not disconnected notes. |
+| **Ontology-grounded** | Entities and relationships are anchored to a formal ontology term, not a free-text label. | The same concept means the same thing across every agent and system: a shared semantic layer, not disconnected notes. |
 | **Provenance-linked** | Every claim traces to its source and to the expert who validated it. | When an agent acts, the organisation can see exactly what the recommendation rests on. |
 | **Boundary-explicit** | The card states, as first-class content, where its reasoning ceases to hold. | The agent knows the limits of its own competence and escalates rather than guessing. |
 | **Expert-validated** | A card is authoritative only after a qualified domain expert signs it off. | The knowledge is warranted by a named human, not merely statistically plausible. |
@@ -109,17 +109,15 @@ python scripts/validate_card.py examples/wind-energy-gearbox-spalling.jsonld
 
 ## The reasoning layers
 
-A card represents its reasoning in layers, and carries **as many as its knowledge supports** —
-the layers are a ladder, not a checklist.
+A card represents its reasoning in layers:
 
-1. **Narrative** — a plain-language account for a human reviewer.
-2. **Pattern** — the signals, thresholds, and the conclusion they support.
-3. **Rule** — a formal rule whose terms are ontology classes, checkable by a symbolic reasoner.
-4. **Probabilistic** — *optional*, present only when calibration data supports it.
+1. Narrative: a plain-language account for a human reviewer.
+2. Pattern: the signals, thresholds, and the conclusion they support.
+3. Rule: a formal rule whose terms are ontology classes, checkable by a symbolic reasoner.
+4. Probabilistic: *optional*, present only when calibration data supports it.
 
 A card with only the narrative and rule layers is complete and valid. Most organisations have
-not documented conditional probabilities, and a card is never the weaker for stopping where
-its evidence stops.
+not documented conditional probabilities. In this way, a card is never weaker for not having all the reasoning layers.
 
 ## Status
 
@@ -141,7 +139,7 @@ the same terms as the file it touches (see below).
 - **Schema, JSON-LD context, examples, and scripts:** [Apache 2.0](LICENSE).
 - **Ontologies and written specification:** [CC BY 4.0](LICENSE-CC-BY).
 
-Both licences permit commercial use and require attribution to Mondegreen.ai. See
+Both licences require attribution to Mondegreen.ai. See
 [`NOTICE`](NOTICE) for attribution details.
 
 Copyright © 2026 [Mondegreen.ai](https://mondegreen.ai). Porto, Portugal.
