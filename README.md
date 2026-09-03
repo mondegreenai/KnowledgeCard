@@ -11,7 +11,7 @@ and AI systems can reason over.
 [Specification](spec/knowledge-card-spec.md) ·
 [Schema](schema/knowledge-card.schema.json) ·
 [Example](examples/wind-energy-gearbox-spalling.jsonld) ·
-[Paper](https://arxiv.org/abs/2607.XXXXX) <!-- Submitted to arXiv (cs.AI, cross-list cs.DB). Replace 2607.XXXXX with the public arXiv identifier once the abstract page goes live. --> ·
+[Paper](https://arxiv.org/abs/2608.26176)
 [Studio](https://studio.mondegreen.ai)
 
 *A project by [Mondegreen](https://mondegreen.ai) · v0.1 public draft*
