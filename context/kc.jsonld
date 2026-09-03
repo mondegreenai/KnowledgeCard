@@ -4,7 +4,6 @@
 
     "kc": "https://mondegreen.ai/ontology/kc#",
     "energy": "https://mondegreen.ai/ontology/energy#",
-    "sd": "https://mondegreen.ai/ontology/semidiag#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "prov": "http://www.w3.org/ns/prov#",
